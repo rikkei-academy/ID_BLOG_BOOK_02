@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ra.jwt.JwtTokenProvider;
@@ -14,6 +15,7 @@ import ra.model.entity.Roles;
 import ra.model.entity.Users;
 import ra.model.service.RoleService;
 import ra.model.service.UserService;
+import ra.payload.request.ChangePass;
 import ra.payload.request.LoginRequest;
 import ra.payload.request.SignupRequest;
 import ra.payload.response.JwtResponse;
@@ -118,5 +120,30 @@ public class UserController {
     }
     //////////////////sdsddssdsdsdsd////////////////////////
 
+    @PutMapping("/changePass")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePass changePass) {
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Users users = userService.findByID(userDetails.getUserId());
+        BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
+        boolean passChecker = bc.matches(changePass.getOldPassword(), users.getPassword());
+        if (passChecker) {
+            boolean checkDuplicate = bc.matches(changePass.getPassword(), users.getPassword());
+            if (checkDuplicate) {
+                return ResponseEntity.ok(new MessageResponse("Mật khẩu mới phải khác mật khẩu cũ!"));
+            } else {
+                users.setPassword(encoder.encode(changePass.getPassword()));
+                userService.saveOrUpdate(users);
+                return ResponseEntity.ok(new MessageResponse("Đổi mật khẩu thành công !"));
+            }
+        } else {
+            return ResponseEntity.ok(new MessageResponse("Mật khẩu không hợp lệ ! Đổi mật khẩu thất bại"));
+        }
+    }
+
+    @GetMapping()
+    public List<Users> readUser(){
+        List<Users> userList = userService.findAll();
+        return userList;
+    }
 }
 

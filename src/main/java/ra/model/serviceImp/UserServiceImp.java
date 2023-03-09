@@ -6,6 +6,8 @@ import ra.model.entity.Users;
 import ra.model.repository.UserRepository;
 import ra.model.service.UserService;
 
+import java.util.List;
+
 @Service
 public class UserServiceImp implements UserService {
     @Autowired
@@ -17,6 +19,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public List<Users> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public boolean existsByUserName(String userName) {
         return userRepository.existsByUserName(userName);
     }
@@ -24,6 +31,11 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Users findByID(int userID) {
+        return userRepository.findById(userID).get();
     }
 
     @Override
