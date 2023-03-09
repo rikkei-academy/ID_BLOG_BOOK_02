@@ -93,22 +93,22 @@ public class UserController {
         userService.saveOrUpdate(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully"));
     }
-//    @PostMapping("/signin")
-//    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(loginRequest.getUserName(),loginRequest.getPassword())
-//        );
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        CustomUserDetails customUserDetail = (CustomUserDetails) authentication.getPrincipal();
-//        //Sinh JWT tra ve client
-//        String jwt = tokenProvider.generateToken(customUserDetail);
-//        //Lay cac quyen cua user
-//        List<String> listRoles = customUserDetail.getAuthorities().stream()
-//                .map(item->item.getAuthority()).collect(Collectors.toList());
-//        return ResponseEntity.ok(new JwtResponse(jwt,customUserDetail.getUsername(),customUserDetail.getEmail(),
-//                customUserDetail.getPhone(),listRoles));
-//
-//    }
+    @PostMapping("/signin")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUserName(),loginRequest.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        CustomUserDetails customUserDetail = (CustomUserDetails) authentication.getPrincipal();
+        //Sinh JWT tra ve client
+        String jwt = tokenProvider.generateToken(customUserDetail);
+        //Lay cac quyen cua user
+        List<String> listRoles = customUserDetail.getAuthorities().stream()
+                .map(item->item.getAuthority()).collect(Collectors.toList());
+        return ResponseEntity.ok(new JwtResponse(jwt,customUserDetail.getUsername(),customUserDetail.getEmail(),
+                customUserDetail.getPhone(),listRoles));
+
+    }
     @GetMapping("/logOut")
     public ResponseEntity<?> logOut(HttpServletRequest request){
         String authorizationHeader = request.getHeader("Authorization");
