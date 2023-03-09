@@ -139,5 +139,11 @@ public class UserController {
             return ResponseEntity.ok(new MessageResponse("Mật khẩu không hợp lệ ! Đổi mật khẩu thất bại"));
         }
     }
+
+    @GetMapping()
+    public List<Users> readUser(){
+        List<Users> userList = userService.findAll();
+        return userList;
+    }
 }
 
