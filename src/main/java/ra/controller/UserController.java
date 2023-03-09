@@ -1,18 +1,27 @@
 package ra.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.bind.annotation.*;
 import ra.jwt.JwtTokenProvider;
 import ra.model.entity.ERole;
+import ra.model.entity.PasswordResetToken;
 import ra.model.entity.Roles;
 import ra.model.entity.Users;
+import ra.model.sendEmail.ProvideSendEmail;
+import ra.model.service.PassResetService;
 import ra.model.service.RoleService;
 import ra.model.service.UserService;
 import ra.payload.request.ChangePass;
@@ -21,13 +30,11 @@ import ra.payload.request.SignupRequest;
 import ra.payload.response.JwtResponse;
 import ra.payload.response.MessageResponse;
 import ra.security.CustomUserDetails;
+import ra.security.CustomUserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
@@ -44,6 +51,9 @@ public class UserController {
     private RoleService roleService;
     @Autowired
     private PasswordEncoder encoder;
+    private ProvideSendEmail provideSendEmail;
+    private PassResetService passResetService;
+    private CustomUserDetailsService customUserDetailsService;
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
         if (userService.existsByUserName(signupRequest.getUserName())) {
@@ -93,7 +103,7 @@ public class UserController {
         }
         user.setListRoles(listRoles);
         userService.saveOrUpdate(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully"));
+        return ResponseEntity.ok(new MessageResponse("Đã đăng ký thành công"));
     }
     @PostMapping("/signin")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
@@ -145,5 +155,49 @@ public class UserController {
         List<Users> userList = userService.findAll();
         return userList;
     }
+
+    @GetMapping("/searchUser")
+    public List<Users> listSearch(@RequestParam("userName") String userName){
+        List<Users> listSearch = userService.searchByName(userName);
+        return listSearch ;
+    }
+
+    @GetMapping("/getPagging")
+    public ResponseEntity<Map<String, Object>> getPagging(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Users> pageBook = userService.getPagination(pageable);
+        Map<String, Object> data = new HashMap<>();
+        data.put("user", pageBook.getContent());
+        data.put("total", pageBook.getSize());
+        data.put("totalItems", pageBook.getTotalElements());
+        data.put("totalPages", pageBook.getTotalPages());
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+
+
+    @PostMapping("/block/{userID}")
+    public ResponseEntity<?> blockUser(@PathVariable("userID") int userID) {
+        Users userBlock = userService.findByID(userID);
+        userBlock.setUserStatus(false);
+        userService.saveOrUpdate(userBlock);
+        return ResponseEntity.ok("Tài Khoản bị khóa !");
+    }
+
+    @GetMapping("/filter/{option}")
+    public List<Users> listFilter(@PathVariable("option") Integer option){
+        return userService.listFilter(option);
+    }
+
+    @GetMapping("/sort")
+    public List<Users> sortUser(@RequestParam("userName") String userName){
+        List<Users> listSort = userService.sortByName(userName);
+        return  listSort;
+    }
+
+
+
 }
 
