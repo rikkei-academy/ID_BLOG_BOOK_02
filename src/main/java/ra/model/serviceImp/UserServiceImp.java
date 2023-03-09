@@ -75,4 +75,10 @@ public class UserServiceImp implements UserService {
             return  userRepository.findAll(Sort.by("userName").descending());
         }
     }
+    @Override
+    public Users findByEmail(String email) {
+
+        return userRepository.findByEmail(email);
+
+    }
 }

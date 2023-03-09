@@ -10,13 +10,18 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.bind.annotation.*;
 import ra.jwt.JwtTokenProvider;
 import ra.model.entity.ERole;
+import ra.model.entity.PasswordResetToken;
 import ra.model.entity.Roles;
 import ra.model.entity.Users;
+import ra.model.sendEmail.ProvideSendEmail;
+import ra.model.service.PassResetService;
 import ra.model.service.RoleService;
 import ra.model.service.UserService;
 import ra.payload.request.ChangePass;
@@ -25,6 +30,7 @@ import ra.payload.request.SignupRequest;
 import ra.payload.response.JwtResponse;
 import ra.payload.response.MessageResponse;
 import ra.security.CustomUserDetails;
+import ra.security.CustomUserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -45,6 +51,9 @@ public class UserController {
     private RoleService roleService;
     @Autowired
     private PasswordEncoder encoder;
+    private ProvideSendEmail provideSendEmail;
+    private PassResetService passResetService;
+    private CustomUserDetailsService customUserDetailsService;
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
         if (userService.existsByUserName(signupRequest.getUserName())) {
@@ -187,5 +196,8 @@ public class UserController {
         List<Users> listSort = userService.sortByName(userName);
         return  listSort;
     }
+
+
+
 }
 

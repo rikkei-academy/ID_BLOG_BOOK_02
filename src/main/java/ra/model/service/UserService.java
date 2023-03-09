@@ -18,4 +18,5 @@ public interface UserService {
     Page<Users> getPagination(Pageable pageable);
     List<Users> listFilter(Integer option);
     List<Users> sortByName(String directionName);
+    Users findByEmail(String email);
 }
