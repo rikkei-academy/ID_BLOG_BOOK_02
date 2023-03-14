@@ -34,7 +34,7 @@ public class Users {
             inverseJoinColumns = @JoinColumn(name = "RoleId"))
     private Set<Roles> listRoles = new HashSet<>();
     @OneToMany(mappedBy = "users")
-    private List<Cart> listCart = new ArrayList<>();
+    private List<Carts> listCart = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "Wishlist",joinColumns = @JoinColumn(name = "UserId"),

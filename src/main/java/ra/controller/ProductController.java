@@ -9,12 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ra.model.entity.Catalog;
 import ra.model.entity.Product;
-import ra.model.entity.ResponseObject;
 import ra.model.service.CatalogService;
 import ra.model.service.ProductService;
-import ra.model.serviceImp.ProductServiceImp;
 import ra.payload.request.ProductRequest;
-import ra.payload.response.ProductResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -25,12 +22,9 @@ import java.util.*;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @Autowired
-    private ProductServiceImp productServiceImp;
 
     @Autowired
     private CatalogService catalogService;
-
 
     @GetMapping
     public List<Product> getAllProduct() {
@@ -116,8 +110,6 @@ public class ProductController {
     }
 
 
-
-    @DeleteMapping("/delete/{producId}")
 //        @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteproduct(@PathVariable("producId") int productId) {
         try{

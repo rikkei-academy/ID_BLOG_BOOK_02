@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ra.model.entity.Carts;
 import ra.model.entity.Users;
 
 import java.util.Collection;
@@ -23,6 +24,9 @@ public class CustomUserDetails implements UserDetails {
     private String phone;
     private String address;
     private boolean userStatus;
+
+    private List<Carts> carts;
+
     private Collection<? extends GrantedAuthority> authorities;
 
 
@@ -46,6 +50,8 @@ public class CustomUserDetails implements UserDetails {
                 user.getAddress(),
                 user.getPhone(),
                 user.isUserStatus(),
+                user.getListCart(),
+
                 listAuthorities
         );
 

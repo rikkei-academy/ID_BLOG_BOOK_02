@@ -16,9 +16,10 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TagId")
     private int tagId;
+    @Column (name = "TagName")
+    private String tagName;
     @Column(name = "TagStatus")
     private boolean tagStatus;
-
         @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "TagProduct",joinColumns = @JoinColumn(name = "UserId"),
             inverseJoinColumns = @JoinColumn(name = "ProductId"))

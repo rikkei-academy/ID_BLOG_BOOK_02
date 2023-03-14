@@ -16,9 +16,8 @@ public class Star {
 
     @Column(name = "StarId")
     private int starId;
-    @Column(name = "StarName")
-    private String starName;
-
+    @Column(name = "starPoint")
+    private int starPoint;
     @JoinColumn(name = "ProductId")
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

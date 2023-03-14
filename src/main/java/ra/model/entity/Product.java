@@ -49,7 +49,7 @@ public class Product {
     List <Comment> commentList = new ArrayList<>();
     @OneToMany(mappedBy ="product")
     @JsonIgnore
-    List<OrderDetail> orderDetailList = new ArrayList<>();
+    List<CartDetail> orderDetailList = new ArrayList<>();
 //    @JsonIgnore
 
 

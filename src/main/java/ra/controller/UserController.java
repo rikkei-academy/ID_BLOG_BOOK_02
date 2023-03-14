@@ -118,7 +118,7 @@ public class UserController {
             List<String> listRoles = customUserDetail.getAuthorities().stream()
                     .map(item -> item.getAuthority()).collect(Collectors.toList());
             return ResponseEntity.ok(new JwtResponse(jwt, customUserDetail.getUsername(), customUserDetail.getEmail(),
-                    customUserDetail.getPhone(), listRoles));
+                    customUserDetail.getPhone(), listRoles,customUserDetail.getCarts().get(customUserDetail.getCarts().size() - 1)));
 
         } else {
             return ResponseEntity.ok("Tài Khoản đã bị khóa ! Không Đăng Nhập Được ");

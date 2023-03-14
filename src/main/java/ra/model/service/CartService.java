@@ -1,15 +1,15 @@
 package ra.model.service;
 
-import ra.model.entity.Cart;
 
+import ra.model.entity.Carts;
+import ra.payload.request.CartConfirm;
+
+import java.util.Date;
 import java.util.List;
 
-public interface CartService {
-    Cart insert(Cart cart);
+public interface CartService extends RootService<Carts,Integer> {
+    Carts mapCartConfirmToCart(Carts carts, CartConfirm confirm);
 
-    void delete(int cartId);
-
-    Cart findById(int cartId);
-
-    List<Cart> findAllUserId(int userId);
+    List<Carts> findByCreatDateBetween(Date startDate, Date endDate);
+    List<Carts> findByUsers_UserIdAndCartStatus(Integer userId, Integer cartStatus);
 }

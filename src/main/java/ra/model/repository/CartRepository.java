@@ -3,15 +3,17 @@ package ra.model.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import ra.model.entity.Cart;
+import org.springframework.stereotype.Repository;
+import ra.model.entity.Carts;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.Date;
 import java.util.List;
 
-public interface CartRepository extends JpaRepository<Cart,Integer> {
-    List<Cart> findByUsers_UserId(int userId);
-    Page<Cart> findAllByOrderStatus(int status, Pageable pageable);
-    Page<Cart> findAllByUser_UserId(int id,Pageable pageable);
-
-    Page<Cart> findAllByUser_UserIdAndOrderStatus(int userId, int status, Pageable pageable);
-    Cart findByUser_UserIdAndOrderStatus(int id,int status);
+@Repository
+public interface CartRepository extends JpaRepository<Carts,Integer> {
+    Page<Carts> findByCartNameContaining(String name, Pageable pageable);
+    Page<Carts> findByCartStatusNotIn(List<Integer> cartStatus, Pageable pageable);
+    List<Carts> findByCreatDateBetween(Date startDate, Date endDate);
+    List<Carts> findByUsers_UserIdAndCartStatus(Integer userId, Integer cartStatus);
 }
