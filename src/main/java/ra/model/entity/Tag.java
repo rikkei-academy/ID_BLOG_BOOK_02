@@ -14,14 +14,14 @@ public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TagId")
+    @Column(name = "tagId")
     private int tagId;
-    @Column (name = "TagName")
+    @Column (name = "tagName")
     private String tagName;
     @Column(name = "TagStatus")
     private boolean tagStatus;
-        @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "TagProduct",joinColumns = @JoinColumn(name = "UserId"),
-            inverseJoinColumns = @JoinColumn(name = "ProductId"))
-    private Set<Product> listProduct = new HashSet<>();
+//        @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "TagProduct",joinColumns = @JoinColumn(name = "UserId"),
+//            inverseJoinColumns = @JoinColumn(name = "ProductId"))
+//    private Set<Product> listProduct = new HashSet<>();
 }

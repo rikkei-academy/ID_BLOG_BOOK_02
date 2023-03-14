@@ -2,8 +2,12 @@ package ra.payload.response;
 
 import lombok.Data;
 import ra.model.entity.Catalog;
+import ra.model.entity.Comment;
+import ra.model.entity.Tag;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ProductResponse {
@@ -18,5 +22,7 @@ public class ProductResponse {
     private String productImg;
     private String productLanguage;
     private String productCompany;
+    private List<Comment> listComment = new ArrayList<>();
+    private List<Tag> tagList= new ArrayList<>();
     private Catalog catalog;
 }

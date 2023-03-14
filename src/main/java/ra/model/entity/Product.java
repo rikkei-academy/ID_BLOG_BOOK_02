@@ -50,6 +50,9 @@ public class Product {
     @OneToMany(mappedBy ="product")
     @JsonIgnore
     List<CartDetail> orderDetailList = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable( name = "tag_Product", joinColumns = @JoinColumn(name = "productId"), inverseJoinColumns = @JoinColumn(name = "tagId"))
+    private List<Tag> tagList= new ArrayList<>();
 //    @JsonIgnore
 
 

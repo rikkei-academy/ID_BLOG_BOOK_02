@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ra.model.entity.Catalog;
 import ra.model.entity.Product;
+import ra.model.entity.ResponseObject;
+import ra.model.entity.Tag;
 import ra.model.service.CatalogService;
 import ra.model.service.ProductService;
 import ra.payload.request.ProductRequest;
@@ -32,6 +34,16 @@ public class ProductController {
         return productService.findAll();
     }
 
+//    @PostMapping
+//    ResponseEntity<ResponseObject> createBook(@RequestBody Product book) {
+//        try {
+//            Product result = productService.saveOfUpdate(book);
+//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok", "Thêm thành công book", result));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ResponseObject("false", "không thể thêm book  ", ""));
+//        }
+//    }
+
     @PostMapping("/create")
 //        @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createProduct(@RequestBody ProductRequest productRequest) {
@@ -43,6 +55,7 @@ public class ProductController {
             pro.setProductDescription(productRequest.getProductDescription());
             pro.setProductImg(productRequest.getProductImg());
             pro.setProductCompany(productRequest.getProductCompany());
+            pro.setTagList(productRequest.getTagList());
             pro.setProductAuthor(productRequest.getProductAuthor());
             pro.setProductLanguage(productRequest.getProductLanguage());
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -87,6 +100,7 @@ public class ProductController {
             productUpdate.setProductImg(productRequest.getProductImg());
             productUpdate.setProductLanguage(productRequest.getProductLanguage());
             productUpdate.setProductCompany(productRequest.getProductCompany());
+            productUpdate.setTagList(productRequest.getTagList());
             productUpdate.setProductAuthor(productRequest.getProductAuthor());
             Catalog catalog = catalogService.findById(productRequest.getCatalogId());
             productUpdate.setCatalog(catalog);

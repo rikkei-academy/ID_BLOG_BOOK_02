@@ -1,8 +1,11 @@
 package ra.payload.request;
 
 import lombok.Data;
+import ra.model.entity.Tag;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ProductRequest {
@@ -19,5 +22,6 @@ public class ProductRequest {
     private String productLanguage;
     private String productCompany;
     private int catalogId;
+    private List<Tag> tagList= new ArrayList<>();
 
 }

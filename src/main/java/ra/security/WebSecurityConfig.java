@@ -57,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/product/**").permitAll()
                 .antMatchers("/api/v1/cart/**").permitAll()
                 .antMatchers("/api/v1/star/**").permitAll()
+                .antMatchers("/api/v1/tag/**").permitAll()
                 .anyRequest().authenticated(); // Tất cả các request khác đều cần phải xác thực mới được truy cập
 
         // Thêm một lớp Filter kiểm tra jwt
