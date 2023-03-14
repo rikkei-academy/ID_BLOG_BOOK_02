@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="Users")
@@ -35,9 +33,18 @@ public class Users {
     @JoinTable(name = "User_Role",joinColumns = @JoinColumn(name = "UserId"),
             inverseJoinColumns = @JoinColumn(name = "RoleId"))
     private Set<Roles> listRoles = new HashSet<>();
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "Wishlist",joinColumns = @JoinColumn(name = "UserId"),
-//            inverseJoinColumns = @JoinColumn(name = "ProductId"))
-//    private Set<Product> listProduct = new HashSet<>();
+    @OneToMany(mappedBy = "users")
+    private List<Carts> listCart = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "Wishlist",joinColumns = @JoinColumn(name = "UserId"),
+            inverseJoinColumns = @JoinColumn(name = "ProductId"))
+    private Set<Product> listProduct = new HashSet<>();
+    @OneToMany(mappedBy = "users")
+    List<Star> starList = new ArrayList<>();
+    @OneToMany(mappedBy = "users")
+    List <Comment> commentList = new ArrayList<>();
+
+
 }
 
