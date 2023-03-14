@@ -1,5 +1,7 @@
 package ra.payload.response;
 
+import ra.model.entity.Carts;
+
 import java.util.List;
 
 public class JwtResponse {
@@ -9,13 +11,15 @@ public class JwtResponse {
     private String email;
     private String phone;
     private List<String> listRoles;
+    private Carts carts;
 
-    public JwtResponse(String token, String userName, String email, String phone, List<String> listRoles) {
+    public JwtResponse(String token, String userName, String email, String phone, List<String> listRoles,Carts carts) {
         this.token = token;
         this.userName = userName;
         this.email = email;
         this.phone = phone;
         this.listRoles = listRoles;
+        this.carts=carts;
     }
 
     public String getToken() {
@@ -64,6 +68,14 @@ public class JwtResponse {
 
     public void setListRoles(List<String> listRoles) {
         this.listRoles = listRoles;
+    }
+
+    public Carts getCarts() {
+        return carts;
+    }
+
+    public void setCarts(Carts carts) {
+        this.carts = carts;
     }
 }
 
